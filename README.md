@@ -3,14 +3,14 @@
 Build a **domain-specific AI intake agent** for the **Medical** use-case using **OpenMic**.  
 This repository contains only the **backend** (no UI) and demonstrates:
 
-- **Pre-call webhook** → enrich call with patient context
-- **In-call function** → fetch patient by Medical ID
-- **Post-call webhook** → receive transcript/summary, run lightweight NLP, store results
-- **Bot CRUD** → create/list/update/delete bots (stored in local `data/bots.json` for easy testing)
-- **Swagger UI** for local testing
-- **ngrok** integration so OpenMic can reach your local webhooks during a Test Call
+- **Pre-call webhook** → enrich call with patient context  
+- **In-call function** → fetch patient by Medical ID  
+- **Post-call webhook** → receive transcript/summary, run lightweight NLP, store results  
+- **Bot CRUD** → create/list/update/delete bots (stored in local `data/bots.json` for easy testing)  
+- **Swagger UI** for local testing  
+- **ngrok** integration so OpenMic can reach your local webhooks during a Test Call  
 
-> ✅ **No real phone calls or mic input are required.** Use OpenMic **Test Call** in their dashboard.
+> ✅ **No real phone calls or mic input are required.** Use OpenMic **Test Call** in their dashboard.  
 
 ---
 
@@ -33,11 +33,11 @@ This repository contains only the **backend** (no UI) and demonstrates:
 
 ## Prerequisites
 
-- **Python 3.10+**
-- **pip** (or uv/poetry if you prefer)
-- **ngrok** (or any HTTPS tunneling tool)
-- An **OpenMic** account + API key (optional if you only use local JSON bots)
-  - Sign up & key creation are noted in [OpenMic Dashboard Wiring](#openmic-dashboard-wiring).
+- **Python 3.10+**  
+- **pip** (or uv/poetry if you prefer)  
+- **ngrok** (or any HTTPS tunneling tool)  
+- An **OpenMic** account + API key (optional if you only use local JSON bots)  
+  - Sign up & key creation are noted in [OpenMic Dashboard Wiring](#openmic-dashboard-wiring).  
 
 ---
 
@@ -63,7 +63,7 @@ ngrok http 3000
 
 Open Swagger at: http://127.0.0.1:3000/docs
 
-Copy the ngrok public URL and use it when wiring OpenMic webhooks (next sections).
+Copy the ngrok public URL and use it when wiring OpenMic webhooks.
 
 Project Structure
 
@@ -81,15 +81,13 @@ medical_intake_agent/
   │    ├── bots.json
   │    ├── patients.json
   │    └── calls.json
-  ├── .venv                   # optional (for OPENMIC_API_KEY)
+  ├── .env                   # optional (for OPENMIC_API_KEY)
   └── README.md
-
 
 Configuration
 Environment Variables
 
 If you later proxy real OpenMic Bot CRUD (instead of local JSON), set:
-
 # mac/linux (bash/zsh)
 export OPENMIC_API_KEY=sk_test_or_live_key_here
 
@@ -97,26 +95,21 @@ export OPENMIC_API_KEY=sk_test_or_live_key_here
 $env:OPENMIC_API_KEY="sk_test_or_live_key_here"
 
 Or use .env:
-
 OPENMIC_API_KEY=sk_test_or_live_key_here
 
-
 In main.py:
-
 from dotenv import load_dotenv
 load_dotenv()
 
-
-Note: In the JSON-backed version of routers/bots.py provided here, the API key is not required. You only need it if you later switch bots.py to call OpenMic’s REST API.
+Note: In the JSON-backed version of routers/bots.py, the API key is not required.
 
 Paths to JSON files
 
 Each service uses a path like:
-
 DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "<file>.json")
 
 
-If your folder layout changes, update the DATA_PATH in:
+Update if your folder layout changes:
 
 routers/bots.py → data/bots.json
 
@@ -125,7 +118,8 @@ services/patients.py → data/patients.json
 services/calls.py → data/calls.json
 
 Data Files (JSON DB)
-data/bots.json (sample)
+data/bots.json
+
 [
   {
     "uid": "bot001",
@@ -145,7 +139,8 @@ data/bots.json (sample)
   }
 ]
 
-data/patients.json (sample)
+data/patients.json
+
 [
   {
     "medical_id": "M123",
@@ -159,37 +154,32 @@ data/patients.json (sample)
   }
 ]
 
-data/calls.json (starts empty)
+data/calls.json
 []
 
 Run the server + ngrok
-
-Start FastAPI:
-
+# run FastAPI
 uvicorn main:app --reload --port 3000
 
-
-Start ngrok in another terminal:
-
+# run ngrok in another terminal
 ngrok http 3000
 
 
-Copy the ngrok URL, e.g. https://random-subdomain.ngrok.io and use it for:
+Use the ngrok URL for webhooks:
 
-Pre-call webhook → https://<ngrok>/webhooks/pre-call
+Pre-call → https://<ngrok>/webhooks/pre-call
 
 In-call function → https://<ngrok>/functions/fetch-patient
 
-Post-call webhook → https://<ngrok>/webhooks/post-call
+Post-call → https://<ngrok>/webhooks/post-call
 
 Swagger Testing (All Endpoints)
 
 Open: http://127.0.0.1:3000/docs
 
-Bots CRUD (JSON-backed)
+Bots CRUD
 
-Create (POST /bots)
-
+POST /bots
 {
   "name": "Diet Consultation Bot",
   "prompt": "You provide dietary advice and record patient food allergies.",
@@ -198,9 +188,7 @@ Create (POST /bots)
   "status": "active"
 }
 
-
 Response
-
 {
   "uid": "bot003",
   "name": "Diet Consultation Bot",
@@ -210,24 +198,16 @@ Response
   "status": "active"
 }
 
-
-List (GET /bots) → no body
-
-Get (GET /bots/bot003) → no body
-
-Update (PATCH /bots/bot003)
+PATCH /bots/bot003
 
 {
   "prompt": "You provide detailed dietary guidance, check for allergies, and suggest a weekly meal plan.",
   "voice": "verse"
 }
 
+In-call Function
 
-Delete (DELETE /bots/bot002) → no body
-
-In-call Function (POST /functions/fetch-patient)
-
-Request
+POST /functions/fetch-patient
 
 {
   "medical_id": "M123"
@@ -246,9 +226,11 @@ Response
   "notes": "On metformin, stable"
 }
 
-Pre-call Webhook (POST /webhooks/pre-call)
+Pre-call Webhook
 
-Request (what OpenMic will send)
+POST /webhooks/pre-call
+
+Request:
 
 {
   "event": "call",
@@ -261,7 +243,7 @@ Request (what OpenMic will send)
 }
 
 
-Response (what you return)
+Response:
 
 {
   "call": {
@@ -275,9 +257,11 @@ Response (what you return)
   }
 }
 
-Post-call Webhook (POST /webhooks/post-call)
+Post-call Webhook
 
-Request (what OpenMic will send)
+POST /webhooks/post-call
+
+Request:
 
 {
   "type": "end-of-call-report",
@@ -291,21 +275,21 @@ Request (what OpenMic will send)
 }
 
 
-Response (what you return)
+Response:
 
 {
   "status": "ok"
 }
 
 
-What gets stored in calls.json
+Stored in calls.json:
 
 [
   {
     "session_id": "sess_001",
     "bot_uid": "bot001",
     "transcript": "Patient reported chest pain for two days.",
-    "redacted_transcript": "Patient reported chest pain for two days.", 
+    "redacted_transcript": "Patient reported chest pain for two days.",
     "summary": "Possible angina. Needs urgent check-up.",
     "soap": {
       "S": "Patient reported chest pain for two days.",
@@ -319,120 +303,62 @@ What gets stored in calls.json
 
 OpenMic Dashboard Wiring
 
-Create/Open your bot in OpenMic dashboard (or use their example bot).
+Create a bot in OpenMic dashboard.
 
-In the bot’s Webhooks/Tools settings:
+Configure:
 
-Pre-call webhook URL → https://<ngrok>/webhooks/pre-call
+Pre-call webhook → https://<ngrok>/webhooks/pre-call
 
-Custom Function (tool) → name it fetch_patient, method POST, URL https://<ngrok>/functions/fetch-patient
+Custom Function → https://<ngrok>/functions/fetch-patient
 
-Post-call webhook URL → https://<ngrok>/webhooks/post-call
+Post-call webhook → https://<ngrok>/webhooks/post-call
 
-Click Test Call in OpenMic:
-
-Agent introduces itself.
-
-It asks for Medical ID.
-
-You provide M123 → OpenMic calls your in-call function.
-
-At end of call, OpenMic posts transcript/summary to your post-call webhook.
-
-✅ Actual phone calls/mic input not required. The dashboard Test Call is sufficient.
+Run a Test Call to see the flow end-to-end.
 
 Demo Script (for Loom)
 
-Show http://127.0.0.1:3000/docs (Swagger).
+Show Swagger (http://127.0.0.1:3000/docs).
 
-Bots CRUD:
+CRUD bots (create, update, list).
 
-GET /bots → show seeded bots.
+Call POST /functions/fetch-patient with M123.
 
-POST /bots → create bot003.
+Run Test Call in OpenMic → watch pre-call → in-call → post-call.
 
-PATCH /bots/bot003 → update prompt/voice.
-
-Functions:
-
-POST /functions/fetch-patient with {"medical_id": "M123"} → show returned patient data.
-
-Webhooks:
-
-Show ngrok URL.
-
-In OpenMic dashboard, run Test Call (with your URLs configured).
-
-Show your server logs changing for pre-call → function → post-call.
-
-Open data/calls.json and show saved transcript/summary/SOAP/risk.
-
-Close with a quick recap.
+Show updated calls.json.
 
 Troubleshooting & Common Warnings
-“⚠️ Warning: OPENMIC_API_KEY not set. Bot routes will fail.”
 
-This prints if your code expects OPENMIC_API_KEY but it’s not set.
+⚠️ OPENMIC_API_KEY not set → safe to ignore if using JSON DB.
 
-For the JSON-backed bots.py here, you don’t need the key.
+422 Validation Error → check your JSON matches schema.
 
-If you switch to real OpenMic API calls, set the key via:
+Webhook timeout → ensure fast responses (<3s).
 
-mac/linux: export OPENMIC_API_KEY=sk_...
-
-windows powershell: $env:OPENMIC_API_KEY="sk_..."
-
-or put it in .env and call load_dotenv() in main.py.
-
-422 Unprocessable Entity in Swagger
-
-Usually means invalid or extra fields or malformed JSON.
-
-Ensure the request body matches the Swagger schema shown.
-
-Always send valid JSON (double quotes, colons, commas, etc.).
-
-Pre-call webhook timing out
-
-OpenMic will time out if your endpoint doesn’t respond quickly.
-
-Keep it lightweight: quick JSON lookup; return within ~1–3 seconds.
-
-ngrok URL not working
-
-Restart ngrok and update the URLs in the OpenMic dashboard.
-
-Ensure you’re using https://... not http://... for webhooks.
+ngrok URL not working → restart ngrok and update dashboard URLs.
 
 Security Tips
 
-Add a shared secret (e.g., X-Webhook-Token) and verify it on webhook requests.
+Add X-Webhook-Token header validation.
 
-Avoid storing raw PII; the example services/nlp.py shows simple redaction.
+Redact PII in transcripts.
 
-Log minimally in production (mask numbers, IDs).
+Avoid logging sensitive info.
 
 Next Steps & Optional Upgrades
 
-Switch bots CRUD to real OpenMic API using your OPENMIC_API_KEY.
+Use OpenMic API for real bot CRUD.
 
-Replace rule-based NLP with a small model or LLM call (for richer SOAP notes).
+Replace rule-based NLP with small LLM.
 
-Add Pre-Tool webhook support for dynamic tool parameter injection.
+Add Pre-Tool webhook.
 
-Add basic auth or signature verification for webhooks.
-
-Containerize with Docker & add CI.
+Containerize with Docker.
 
 Commands Reference
-# run the server
 uvicorn main:app --reload --port 3000
-
-# run ngrok
 ngrok http 3000
 
-# set OPENMIC_API_KEY (bash/zsh)
-export OPENMIC_API_KEY=sk_test_or_live_key_here
-
-# set OPENMIC_API_KEY (powershell)
-$env:OPENMIC_API_KEY="sk_test_or_live_key_here"
+# set OPENMIC_API_KEY
+export OPENMIC_API_KEY=sk_test_or_live_key_here   # mac/linux
+$env:OPENMIC_API_KEY="sk_test_or_live_key_here"   # windows
