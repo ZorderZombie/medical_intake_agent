@@ -2,7 +2,7 @@
 import os
 import httpx
 
-API_KEY = "omic_946ee1c6e5983fd1941ef47fccc625283b51"
+API_KEY = "omic_c88b60f1e3d7bfaad3deee5c5edde12ba726"
 BASE_URL = "https://api.openmic.ai/v1"
 
 headers = {"Authorization": f"Bearer {API_KEY}"}

@@ -18,15 +18,5 @@
     "conditions": ["Hypertension", "Asthma"],
     "last_visit": "2025-07-15",
     "notes": "BP check due. Prescribed inhaler."
-  },
-  {
-    "medical_id": "M789",
-    "name": "Meera Iyer",
-    "phone": "+919900112233",
-    "dob": "1978-12-01",
-    "allergies": [],
-    "conditions": ["Hypothyroidism"],
-    "last_visit": "2025-06-28",
-    "notes": "On levothyroxine. Next thyroid panel in 3 months."
   }
 ]

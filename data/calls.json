@@ -1,48 +1,6 @@
 [
   {
-    "session_id": "abcd123",
-    "bot_uid": "bot001",
-    "transcript": "Patient Anita Rao reported mild chest pain for 2 days.",
-    "redacted_transcript": "Patient [NAME] reported mild chest pain for 2 days.",
-    "summary": "Possible cardiac issue, needs ECG.",
-    "soap": {
-      "S": "Chest pain for 2 days.",
-      "O": "No vitals captured.",
-      "A": "Possible angina.",
-      "P": "Advise ECG and cardiology referral."
-    },
-    "risk": "urgent"
-  },
-  {
-    "session_id": "efgh456",
-    "bot_uid": "bot002",
-    "transcript": "Rahul Sharma asked about refill of inhaler medication.",
-    "redacted_transcript": "[NAME] asked about refill of inhaler medication.",
-    "summary": "Asthma follow-up, medication refill.",
-    "soap": {
-      "S": "Needs refill for asthma inhaler.",
-      "O": "No new complaints.",
-      "A": "Asthma stable.",
-      "P": "Provide prescription refill."
-    },
-    "risk": "routine"
-  },
-  {
-    "session_id": "sess_12345",
-    "bot_uid": "bot_98765",
-    "transcript": "Patient reported chest pain for two days.",
-    "redacted_transcript": "Patient reported chest pain for two days.",
-    "summary": "Possible angina. Needs urgent check-up.",
-    "soap": {
-      "S": "Patient reported chest pain for two days",
-      "O": "No vitals captured.",
-      "A": "Possible angina. Needs urgent check-up.",
-      "P": "Follow-up recommended."
-    },
-    "risk": "urgent"
-  },
-  {
-    "session_id": "sess_001",
+    "session_id": "sess_011",
     "bot_uid": "bot001",
     "transcript": "Patient reported chest pain for two days.",
     "redacted_transcript": "Patient reported chest pain for two days.",
@@ -53,6 +11,9 @@
       "A": "Possible angina. Needs urgent check-up.",
       "P": "Follow-up recommended."
     },
-    "risk": "urgent"
+    "risk": "urgent",
+    "is_successful": true,
+    "started_at": "2025-09-20T10:00:00Z",
+    "ended_at": "2025-09-20T10:05:00Z"
   }
 ]

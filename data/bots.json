@@ -8,7 +8,7 @@
     "status": "active"
   },
   {
-    "uid": "bot003",
+    "uid": "bot002",
     "name": "Diet Consultation Bot",
     "prompt": "You provide detailed dietary guidance, check for allergies, and suggest a weekly meal plan.",
     "model": "gpt-4o-mini",
@@ -16,11 +16,11 @@
     "status": "active"
   },
   {
-    "uid": "bot004",
+    "uid": "bot003",
     "name": "Diet Consultation Bot",
-    "prompt": "You provide dietary advice and record patient food allergies.",
+    "prompt": "123.",
     "model": "gpt-4o-mini",
-    "voice": "calm",
+    "voice": "verse",
     "status": "active"
   }
 ]
